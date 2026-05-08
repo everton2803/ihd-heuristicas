@@ -7,7 +7,7 @@
 ![UX](https://img.shields.io/badge/UX-Nielsen%20Heuristics-purple)
 
 [![Acessar Sistema](https://img.shields.io/badge/Acessar%20Sistema-GitHub%20Pages-blue?style=for-the-badge)](https://everton2803.github.io/ihd-heuristicas/)
-[![Artigo PDF](https://img.shields.io/badge/Artigo-PDF-red?style=for-the-badge)](./artigo.pdf)
+[![Artigo PDF](https://img.shields.io/badge/Artigo-PDF-red?style=for-the-badge)](./IHC-Heuristicas.pdf)
 
 ---
 

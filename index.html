@@ -1,0 +1,192 @@
+<!doctype html>
+-8" /><html lang="pt-BR">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FaltaFácil — Gestão de Faltas</title>
+  <meta name="description" content="Plataforma estática para registro e relatórios de faltas de alunos (dados fictícios)." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+  <header class="app-header" role="banner">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">✓</div>
+      <div>
+        <h1>FaltaFácil</h1>
+        <p class="subtitle">Gestão de faltas de alunos • dados fictícios • GitHub Pages</p>
+      </div>
+    </div>
+
+    <nav class="tabs" aria-label="Navegação principal">
+      <button class="tab is-active" data-view="registro" aria-current="page">Registro</button>
+      <button class="tab" data-view="relatorios">Relatórios</button>
+      <button class="tab" data-view="ajuda">Ajuda</button>
+    </nav>
+  </header>
+
+  <main id="main" class="container" role="main">
+    <!-- TOAST / FEEDBACK -->
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- VIEW: REGISTRO -->
+    <section id="view-registro" class="view" aria-labelledby="h-registro">
+      <div class="view-head">
+        <h2 id="h-registro">Registro de faltas</h2>
+        <p class="muted">Selecione a turma e a data, marque os alunos faltantes e salve.</p>
+      </div>
+
+      <form id="form-registro" class="card" autocomplete="off">
+        <div class="grid-3">
+          <div class="field">
+            <label for="turmaSelect">Turma</label>
+            <select id="turmaSelect" name="turma" required></select>
+            <small class="hint">Dados fictícios para demonstração.</small>
+          </div>
+
+          <div class="field">
+            <label for="dataInput">Data</label>
+            <input id="dataInput" name="data" type="date" required />
+            <small class="hint">Use uma data válida.</small>
+          </div>
+
+          <div class="field">
+            <label>&nbsp;</label>
+            <button type="button" class="btn btn-secondary" id="btnCarregar">Carregar</button>
+            <small class="hint">Carrega marcações já salvas.</small>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="table-wrap" aria-label="Lista de alunos">
+          <table class="table" id="alunosTable">
+            <thead>
+              <tr>
+                <th>Aluno</th>
+                <th class="col-small">Faltou?</th>
+                <th>Justificativa (opcional)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- JS injeta linhas aqui -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">Salvar faltas</button>
+          <button type="button" class="btn btn-ghost" id="btnLimpar">Limpar marcações</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- VIEW: RELATÓRIOS -->
+    <section id="view-relatorios" class="view is-hidden" aria-labelledby="h-relatorios">
+      <div class="view-head">
+        <h2 id="h-relatorios">Relatórios</h2>
+        <p class="muted">Filtre por turma e período. Exporte CSV/JSON.</p>
+      </div>
+
+      <div class="card">
+        <div class="grid-3">
+          <div class="field">
+            <label for="turmaRelSelect">Turma</label>
+            <select id="turmaRelSelect"></select>
+          </div>
+          <div class="field">
+            <label for="inicioRel">Início</label>
+            <input id="inicioRel" type="date" />
+          </div>
+          <div class="field">
+            <label for="fimRel">Fim</label>
+            <input id="fimRel" type="date" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-secondary" id="btnGerarRel">Gerar relatório</button>
+          <button class="btn btn-ghost" id="btnExportCSV">Exportar CSV</button>
+          <button class="btn btn-ghost" id="btnExportJSON">Exportar JSON</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="kpis" aria-label="Indicadores">
+          <div class="kpi">
+            <span class="kpi-title">Faltas no período</span>
+            <span class="kpi-value" id="kpiFaltas">0</span>
+          </div>
+          <div class="kpi">
+            <span class="kpi-title">Alunos com faltas</span>
+            <span class="kpi-value" id="kpiAlunos">0</span>
+          </div>
+          <div class="kpi">
+            <span class="kpi-title">Taxa média*</span>
+            <span class="kpi-value" id="kpiTaxa">0%</span>
+            <small class="hint">*faltas / (alunos × dias com registro)</small>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="h3">Resumo por aluno</h3>
+        <div class="table-wrap">
+          <table class="table" id="relTable">
+            <thead>
+              <tr>
+                <th>Aluno</th>
+                <th class="col-small">Faltas</th>
+                <th>Última justificativa</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: AJUDA -->
+    <section id="view-ajuda" class="view is-hidden" aria-labelledby="h-ajuda">
+      <div class="view-head">
+        <h2 id="h-ajuda">Ajuda e boas práticas</h2>
+        <p class="muted">Como usar e como a plataforma foi pensada para usabilidade.</p>
+      </div>
+
+      <div class="card prose">
+        <h3>Como usar</h3>
+        <ol>
+          <li>Abra a aba <strong>Registro</strong>.</li>
+          <li>Escolha a <strong>turma</strong> e a <strong>data</strong>.</li>
+          <li>Marque <strong>Faltou?</strong> nos alunos ausentes e (se quiser) escreva a justificativa.</li>
+          <li>Clique em <strong>Salvar faltas</strong>.</li>
+          <li>Na aba <strong>Relatórios</strong>, filtre por período e exporte CSV/JSON.</li>
+        </ol>
+
+        <h3>Privacidade / dados</h3>
+        <p>
+          Este protótipo usa <strong>LocalStorage</strong> (salvamento no navegador) e dados fictícios.
+          Ao limpar o armazenamento do navegador, os registros podem ser apagados.
+        </p>
+
+        <h3>Acessibilidade (base)</h3>
+        <ul>
+          <li>Estrutura semântica (header/main/section).</li>
+          <li>“Pular para o conteúdo”.</li>
+          <li>Feedback via toast com <code>aria-live</code>.</li>
+          <li>Inputs com labels e foco visível.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer" role="contentinfo">
+    <span>FaltaFácil • Protótipo acadêmico • v1</span>
+    <button class="linklike" id="btnReset" title="Apaga todos os registros salvos">Resetar dados</button>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
+``
+<head>
